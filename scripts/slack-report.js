@@ -54,8 +54,7 @@ const failedTests = results
   .filter((r) => r.result.status === "failed")
   .slice(0, MAX_FAILED_LISTED)
   .map(({ suite, title, result }) => {
-    const message =
-      result.error?.message ?? result.errors?.[0]?.message ?? "No error message";
+    const message = result.error?.message ?? result.errors?.[0]?.message ?? "No error message";
     const truncated = String(message).slice(0, MAX_ERROR_LENGTH);
     return `- *${title}* (_${suite}_) \n\`\`\`\n${truncated}\n\`\`\`\n`;
   });

@@ -14,9 +14,7 @@ export class WelcomeComponent extends BaseComponent {
 
   public async expectWelcomeMessage(patronName: string) {
     await this.welcomeMessage.waitFor({ state: "visible" });
-    await expect(this.welcomeMessage).toContainText(
-      `Welcome back ${patronName}.`,
-    );
+    await expect(this.welcomeMessage).toContainText(`Welcome back ${patronName}.`);
   }
 
   public async signOut() {

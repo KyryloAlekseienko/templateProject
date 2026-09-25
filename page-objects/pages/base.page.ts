@@ -55,17 +55,10 @@ export abstract class BasePage extends BaseEntity {
     await field.fill(value);
   }
 
-  async expectText(
-    locator: Locator,
-    expectedText: string | RegExp,
-    name?: string,
-  ) {
+  async expectText(locator: Locator, expectedText: string | RegExp, name?: string) {
     const label = name ?? "Locator";
 
-    await expect(
-      locator,
-      `${label} should have text "${expectedText}"`,
-    ).toHaveText(expectedText);
+    await expect(locator, `${label} should have text "${expectedText}"`).toHaveText(expectedText);
   }
 
   async expectAllVisible(locators: Locator[], name = "Locator list") {
@@ -82,10 +75,7 @@ export abstract class BasePage extends BaseEntity {
     }
 
     if (failed.length > 0) {
-      throw new Error(
-        `Some locators are not visible:\n` +
-          failed.map((f) => ` - ${f}`).join("\n"),
-      );
+      throw new Error(`Some locators are not visible:\n` + failed.map((f) => ` - ${f}`).join("\n"));
     }
   }
 }

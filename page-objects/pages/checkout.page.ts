@@ -45,10 +45,7 @@ export class CheckoutPage extends BasePage {
 
   public async enterExpiryDate(month?: string, year?: string) {
     const now = new Date();
-    const resolvedMonth = (month ?? String(now.getMonth() + 1)).padStart(
-      2,
-      "0",
-    );
+    const resolvedMonth = (month ?? String(now.getMonth() + 1)).padStart(2, "0");
     const resolvedYear = year ?? String(now.getFullYear() + 1);
 
     await this.cardExpiryMonthSelect.selectOption(resolvedMonth);
@@ -108,14 +105,10 @@ export class CheckoutPage extends BasePage {
   }
 
   public async expectNoErrorMessages() {
-    await expect(
-      this.page.locator("#cc_errors, #cc_error, .error_block"),
-    ).toHaveCount(0);
+    await expect(this.page.locator("#cc_errors, #cc_error, .error_block")).toHaveCount(0);
   }
 
-  public async expectSaleConfirmation(
-    text: string | RegExp = "Thanks for booking tickets with",
-  ) {
+  public async expectSaleConfirmation(text: string | RegExp = "Thanks for booking tickets with") {
     await expect(this.page.getByText(text)).toBeVisible({ timeout: 60_000 });
   }
 

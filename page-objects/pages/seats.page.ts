@@ -14,9 +14,7 @@ export class SeatsPage extends BasePage {
 
     this.numberOfSeatsInput = page.locator("#num_seats");
     this.continueBtn = page.locator(".pb_suggested_action");
-    this.confirmSeatsOnHoldBtn = page.locator(
-      'input[type="submit"][name="yes"]',
-    );
+    this.confirmSeatsOnHoldBtn = page.locator('input[type="submit"][name="yes"]');
     this.chooseSeatsForMeButton = page.getByText("Choose seats for me");
     this.letMeChooseMySeatsButton = page.getByText("Let me choose my seats");
   }

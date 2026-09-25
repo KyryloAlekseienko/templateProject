@@ -20,15 +20,7 @@ export class VisualSnapshotConfig {
   ) {}
 
   static defaults(): VisualSnapshotConfig {
-    return new VisualSnapshotConfig(
-      "disabled",
-      "hide",
-      0.2,
-      0.01,
-      undefined,
-      undefined,
-      undefined,
-    );
+    return new VisualSnapshotConfig("disabled", "hide", 0.2, 0.01, undefined, undefined, undefined);
   }
 
   withOverrides(overrides: VisualSnapshotOptions): VisualSnapshotConfig {

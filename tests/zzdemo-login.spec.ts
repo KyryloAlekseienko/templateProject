@@ -1,6 +1,7 @@
 import { Tag } from "../constant/test-tags.constant";
 import { test } from "../lib/core/base-test";
 import { testConfig } from "../configs/config";
+import { InvalidUsers } from "../constant/invalid-users.constant";
 
 test.describe(`ZZDemo login`, () => {
   test(
@@ -8,13 +9,8 @@ test.describe(`ZZDemo login`, () => {
     { tag: [Tag.Regression, Tag.Smoke] },
     async ({ zzDemoProductionsPage }) => {
       await zzDemoProductionsPage.open();
-      await zzDemoProductionsPage.login.login(
-        "invalid_user@example.com",
-        "WrongPass123!",
-      );
-      await zzDemoProductionsPage.login.expectLoginError(
-        "You have not yet registered with us",
-      );
+      await zzDemoProductionsPage.login.login(InvalidUsers.email, InvalidUsers.password);
+      await zzDemoProductionsPage.login.expectLoginError("You have not yet registered with us");
     },
   );
 
@@ -23,10 +19,7 @@ test.describe(`ZZDemo login`, () => {
     { tag: [Tag.Regression] },
     async ({ zzDemoProductionsPage }) => {
       await zzDemoProductionsPage.open();
-      await zzDemoProductionsPage.login.login(
-        testConfig.credentials.login,
-        "WrongPass123!",
-      );
+      await zzDemoProductionsPage.login.login(testConfig.credentials.login, InvalidUsers.password);
       await zzDemoProductionsPage.login.expectLoginError("Incorrect password");
     },
   );
@@ -41,9 +34,7 @@ test.describe(`ZZDemo login`, () => {
         testConfig.credentials.password,
       );
       await zzDemoProductionsPage.welcomeComponent.expectWelcomeMessage(
-        testConfig.credentials.firstName +
-          " " +
-          testConfig.credentials.lastName,
+        testConfig.credentials.firstName + " " + testConfig.credentials.lastName,
       );
     },
   );

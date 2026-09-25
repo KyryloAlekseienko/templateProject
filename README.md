@@ -36,14 +36,14 @@ npx playwright install
 
 Create a `.env` file in the project root. It is loaded via `dotenv` in the Playwright config and `configs/global.ts`. In CI, the same variables are set as GitHub Actions repository secrets (see below).
 
-| Variable   | Description |
-| ---------- | ----------- |
-| `ENV`      | Environment: `dev`, `qa`, `stage`, `prod`. Defaults to `prod`. Only `prod` currently has a real `baseUrl` set (the example spec's target); `dev`/`qa`/`stage` are empty placeholders in `configs/environments.ts` until a real target environment is decided. |
-| `LOGIN`    | Username for login. |
-| `PASSWORD` | Account password. |
-| `ADMIN_LOGIN` | Admin/HQ username, used by `WebControlPanelHelper` (`lib/core/helpers/web-control-panel.helper.ts`) to log in to `Admin/HQ` before setting licensing/settings on a skin. |
-| `ADMIN_PASSWORD` | Admin/HQ password. |
-| `ADMIN_TOTP_SECRET` | Base32 TOTP secret for the Admin/HQ account's two-factor auth (shown at `Admin/HQ/Tokens/Setup`/`Show`) — used to generate a live login code, same mechanism as an authenticator app. |
+| Variable            | Description                                                                                                                                                                                                                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ENV`               | Environment: `dev`, `qa`, `stage`, `prod`. Defaults to `prod`. Only `prod` currently has a real `baseUrl` set (the example spec's target); `dev`/`qa`/`stage` are empty placeholders in `configs/environments.ts` until a real target environment is decided. |
+| `LOGIN`             | Username for login.                                                                                                                                                                                                                                           |
+| `PASSWORD`          | Account password.                                                                                                                                                                                                                                             |
+| `ADMIN_LOGIN`       | Admin/HQ username, used by `WebControlPanelHelper` (`lib/core/helpers/web-control-panel.helper.ts`) to log in to `Admin/HQ` before setting licensing/settings on a skin.                                                                                      |
+| `ADMIN_PASSWORD`    | Admin/HQ password.                                                                                                                                                                                                                                            |
+| `ADMIN_TOTP_SECRET` | Base32 TOTP secret for the Admin/HQ account's two-factor auth (shown at `Admin/HQ/Tokens/Setup`/`Show`) — used to generate a live login code, same mechanism as an authenticator app.                                                                         |
 
 > `use.baseURL` in `playwright.config.ts` is the Playwright default. **Navigation in tests** uses `testConfig.baseUrl` from `configs/environments.ts`, not `process.env.BASE_URL`.
 
@@ -80,10 +80,10 @@ are uploaded as a build artifact regardless of pass/fail, so failures can be ins
 
 Required repository secrets (Settings → Secrets and variables → Actions), same names as the `.env` variables above:
 
-| Secret | Purpose |
-| ------ | ------- |
-| `LOGIN` / `PASSWORD` | Login credentials |
-| `FIRST_NAME` / `LAST_NAME` | Used by `authConfig` (`configs/environments.ts`) |
+| Secret                                                 | Purpose                                          |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| `LOGIN` / `PASSWORD`                                   | Login credentials                                |
+| `FIRST_NAME` / `LAST_NAME`                             | Used by `authConfig` (`configs/environments.ts`) |
 | `ADMIN_LOGIN` / `ADMIN_PASSWORD` / `ADMIN_TOTP_SECRET` | Admin/HQ credentials for `WebControlPanelHelper` |
 
 Note: the runner is Linux (`ubuntu-latest`), same OS family as before — `toHaveScreenshot` baselines are
@@ -92,14 +92,14 @@ they ever drift, not on macOS.
 
 ## Project layout
 
-| Path | Purpose |
-| ---- | ------- |
-| `tests/` | Specs and `auth.setup.ts` |
-| `page-objects/` | Pages and components |
-| `configs/` | Environments and shared `testConfig` |
-| `lib/core/` | Extended `test` with page fixtures, utilities |
-| `lib/visual/` | Visual regression config, page preparation, assertions |
-| `constant/` | Routes, tags, screenshot names |
+| Path            | Purpose                                                |
+| --------------- | ------------------------------------------------------ |
+| `tests/`        | Specs and `auth.setup.ts`                              |
+| `page-objects/` | Pages and components                                   |
+| `configs/`      | Environments and shared `testConfig`                   |
+| `lib/core/`     | Extended `test` with page fixtures, utilities          |
+| `lib/visual/`   | Visual regression config, page preparation, assertions |
+| `constant/`     | Routes, tags, screenshot names                         |
 
 ## Practices
 

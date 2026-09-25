@@ -9,9 +9,7 @@ export class SectionsPage extends BasePage {
   constructor(page: Page, endpoint: string = "") {
     super(page, endpoint);
 
-    this.selectSectionText = page.getByText(
-      "Please select a section from the list below:",
-    );
+    this.selectSectionText = page.getByText("Please select a section from the list below:");
     this.proceedLink = page
       .getByRole("link", { name: "Continue" })
       .or(page.getByRole("link", { name: "Choose seats for me" }));

@@ -17,9 +17,7 @@ export class PerformancesPage extends BasePage {
     this.chooseMyOwnSeatsBtn = page.getByRole("button", {
       name: "Let me choose my seats",
     });
-    this.selectPerformance = page.getByText(
-      "Select a performance to book tickets for",
-    );
+    this.selectPerformance = page.getByText("Select a performance to book tickets for");
   }
 
   public init(prodId: string) {

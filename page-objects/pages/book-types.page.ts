@@ -18,9 +18,7 @@ export class BookTypesPage extends BasePage {
   }
 
   private bookTypeInput(bookTypeId: string): Locator {
-    return this.page.locator(
-      `tr[book_type_id="${bookTypeId}"] input[name^="book_types"]`,
-    );
+    return this.page.locator(`tr[book_type_id="${bookTypeId}"] input[name^="book_types"]`);
   }
 
   public async waitForBookTypesVisible() {

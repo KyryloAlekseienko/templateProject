@@ -16,9 +16,7 @@ export class ZzDemoProductionsPage extends BasePage {
   }
 
   public async clickProduction(prodId: string) {
-    const production = this.page.locator(
-      `#pb_productions .pb_event_title a[href*="${prodId}"]`,
-    );
+    const production = this.page.locator(`#pb_productions .pb_event_title a[href*="${prodId}"]`);
     await expect(production).toBeVisible();
     await this.click(production);
   }

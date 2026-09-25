@@ -35,11 +35,7 @@ export class HqLoginPage extends BasePage {
     await this.click(this.validateBtn);
   }
 
-  public async loginWithTotp(
-    username: string,
-    password: string,
-    totpSecret: string,
-  ) {
+  public async loginWithTotp(username: string, password: string, totpSecret: string) {
     await this.login(username, password);
     await this.submitTotpToken(totpSecret);
   }

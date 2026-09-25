@@ -5,8 +5,7 @@ dotenv.config();
 export default defineConfig({
   testDir: "./tests",
 
-  snapshotPathTemplate:
-      "{testDir}/__snapshots__/{testFilePath}/{arg}{ext}",
+  snapshotPathTemplate: "{testDir}/__snapshots__/{testFilePath}/{arg}{ext}",
 
   timeout: 100 * 1000,
 
@@ -15,8 +14,8 @@ export default defineConfig({
     toHaveScreenshot: {
       threshold: 0.2,
       maxDiffPixelRatio: 0.01,
-      animations: 'disabled',
-      caret: 'hide',
+      animations: "disabled",
+      caret: "hide",
     },
   },
   fullyParallel: true,
@@ -39,7 +38,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
     trace: "on-first-retry",
     video: "retain-on-failure",
-    viewport: {width: 1280, height: 800},
+    viewport: { width: 1280, height: 800 },
   },
 
   projects: [

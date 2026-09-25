@@ -33,24 +33,16 @@ export class WebControlPanelHelper {
     );
   }
 
-  public async getLicensing(
-    orgId: string,
-    keys: string[],
-  ): Promise<Record<string, boolean>> {
+  public async getLicensing(orgId: string, keys: string[]): Promise<Record<string, boolean>> {
     await this.ensureAdminSession();
-    await this.page.goto(
-      `${testConfig.baseUrl}${AppRoutes.adminHQLicensing}?id=${orgId}`,
-      {
-        waitUntil: "domcontentloaded",
-      },
-    );
+    await this.page.goto(`${testConfig.baseUrl}${AppRoutes.adminHQLicensing}?id=${orgId}`, {
+      waitUntil: "domcontentloaded",
+    });
 
     return this.page.evaluate((keys) => {
       const result: Record<string, boolean> = {};
       for (const key of keys) {
-        const el = document.querySelector(
-          `[name="${key}"]`,
-        ) as HTMLInputElement | null;
+        const el = document.querySelector(`[name="${key}"]`) as HTMLInputElement | null;
         result[key] = el ? el.checked : false;
       }
       return result;
@@ -65,9 +57,7 @@ export class WebControlPanelHelper {
 
     const currentCheckboxes = await this.page.evaluate(() =>
       Object.fromEntries(
-        Array.from(
-          document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'),
-        )
+        Array.from(document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'))
           .filter((el) => el.name)
           .map((el) => [el.name, el.checked]),
       ),
@@ -113,19 +103,14 @@ export class WebControlPanelHelper {
     keys: string[],
   ): Promise<Record<string, boolean>> {
     await this.ensureOperatorSession(orgId);
-    await this.page.goto(
-      `${testConfig.baseUrl}${AppRoutes.adminSettings(orgId, section)}`,
-      {
-        waitUntil: "domcontentloaded",
-      },
-    );
+    await this.page.goto(`${testConfig.baseUrl}${AppRoutes.adminSettings(orgId, section)}`, {
+      waitUntil: "domcontentloaded",
+    });
 
     return this.page.evaluate((keys) => {
       const result: Record<string, boolean> = {};
       for (const key of keys) {
-        const el = document.querySelector(
-          `[name="${key}"]`,
-        ) as HTMLInputElement | null;
+        const el = document.querySelector(`[name="${key}"]`) as HTMLInputElement | null;
         result[key] = el ? el.checked : false;
       }
       return result;
@@ -144,9 +129,7 @@ export class WebControlPanelHelper {
 
     const currentCheckboxes = await this.page.evaluate(() =>
       Object.fromEntries(
-        Array.from(
-          document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'),
-        )
+        Array.from(document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'))
           .filter((el) => el.name)
           .map((el) => [el.name, el.checked]),
       ),
@@ -172,53 +155,38 @@ export class WebControlPanelHelper {
 
     return this.page.evaluate(() => {
       const result: Record<string, string> = {};
-      document
-        .querySelectorAll<HTMLInputElement>("form input[name]")
-        .forEach((el) => {
-          if (el.type === "checkbox" || el.type === "radio") {
-            if (el.checked) result[el.name] = el.value;
-          } else if (el.type !== "submit" && el.type !== "button") {
-            result[el.name] = el.value;
-          }
-        });
-      document
-        .querySelectorAll<HTMLSelectElement>("form select[name]")
-        .forEach((el) => {
+      document.querySelectorAll<HTMLInputElement>("form input[name]").forEach((el) => {
+        if (el.type === "checkbox" || el.type === "radio") {
+          if (el.checked) result[el.name] = el.value;
+        } else if (el.type !== "submit" && el.type !== "button") {
           result[el.name] = el.value;
-        });
-      document
-        .querySelectorAll<HTMLTextAreaElement>("form textarea[name]")
-        .forEach((el) => {
-          result[el.name] = el.value;
-        });
+        }
+      });
+      document.querySelectorAll<HTMLSelectElement>("form select[name]").forEach((el) => {
+        result[el.name] = el.value;
+      });
+      document.querySelectorAll<HTMLTextAreaElement>("form textarea[name]").forEach((el) => {
+        result[el.name] = el.value;
+      });
       return result;
     });
   }
 
-  public async getGatewayConfig(
-    orgId: string,
-  ): Promise<Record<string, string>> {
+  public async getGatewayConfig(orgId: string): Promise<Record<string, string>> {
     await this.ensureAdminSession();
-    return this.captureFormState(
-      `${testConfig.baseUrl}${AppRoutes.adminHQCC}?id=${orgId}`,
-    );
+    return this.captureFormState(`${testConfig.baseUrl}${AppRoutes.adminHQCC}?id=${orgId}`);
   }
 
   public async setGatewayConfig(orgId: string, fields: Record<string, string>) {
     await this.ensureAdminSession();
 
-    await this.page.goto(
-      `${testConfig.baseUrl}${AppRoutes.adminHQCC}?id=${orgId}`,
-      { waitUntil: "domcontentloaded" },
-    );
+    await this.page.goto(`${testConfig.baseUrl}${AppRoutes.adminHQCC}?id=${orgId}`, {
+      waitUntil: "domcontentloaded",
+    });
 
     const [gatewaySelects, gatewayFields] = [
-      Object.entries(fields).filter(([name]) =>
-        name.startsWith("gateway_ids["),
-      ),
-      Object.entries(fields).filter(
-        ([name]) => !name.startsWith("gateway_ids["),
-      ),
+      Object.entries(fields).filter(([name]) => name.startsWith("gateway_ids[")),
+      Object.entries(fields).filter(([name]) => !name.startsWith("gateway_ids[")),
     ];
 
     for (const [name, value] of [...gatewaySelects, ...gatewayFields]) {
@@ -258,10 +226,7 @@ export class WebControlPanelHelper {
           response.url() === `${testConfig.baseUrl}${AppRoutes.adminHQCC}` &&
           response.request().method() === "POST",
       ),
-      this.page
-        .locator('form input[type="submit"], form button[type="submit"]')
-        .first()
-        .click(),
+      this.page.locator('form input[type="submit"], form button[type="submit"]').first().click(),
     ]);
 
     if (!response.ok()) {

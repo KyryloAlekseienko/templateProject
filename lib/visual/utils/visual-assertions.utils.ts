@@ -1,8 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import {
-  VisualSnapshotConfig,
-  VisualSnapshotOptions,
-} from "../config/visual-snapshot.config";
+import { VisualSnapshotConfig, VisualSnapshotOptions } from "../config/visual-snapshot.config";
 import { PagePreparer } from "../services/page-preparer.service";
 
 export class VisualAssertions {
@@ -19,10 +16,7 @@ export class VisualAssertions {
   ): Promise<void> {
     await this.preparer.prepare();
     const config = this.defaultConfig.withOverrides(options);
-    await expect(this.page).toHaveScreenshot(
-      name,
-      config.toPlaywrightOptions(),
-    );
+    await expect(this.page).toHaveScreenshot(name, config.toPlaywrightOptions());
   }
 
   async expectElementScreenshot(

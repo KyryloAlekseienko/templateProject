@@ -87,9 +87,7 @@ export class PatronRegisterPage extends BasePage {
   }
 
   public async expectSuccessMessage() {
-    await expect(
-      this.page.getByText(/Congratulations, you are now registered/),
-    ).toBeVisible();
+    await expect(this.page.getByText(/Congratulations, you are now registered/)).toBeVisible();
   }
 
   public async expectErrorMessage(message: string | RegExp) {

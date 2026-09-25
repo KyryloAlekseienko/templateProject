@@ -81,8 +81,7 @@ export const LicenseCheckboxIds = {
   reusable_payment_tokens: "reusable_payment_tokens",
   seat_picker: "seat_picker",
   seat_types_in_pyos: "seat_types_in_pyos",
-  show_socially_distanced_seats_in_seat_picker:
-    "show_socially_distanced_seats_in_seat_picker",
+  show_socially_distanced_seats_in_seat_picker: "show_socially_distanced_seats_in_seat_picker",
   virtual_seats: "virtual_seats",
   primary_skin: "primary_skin",
   activity_stream: "activity_stream",
