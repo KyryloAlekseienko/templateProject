@@ -1,0 +1,24 @@
+{
+  "name": "webmodule-playwright-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui",
+    "test:regression": "npx playwright test --grep @REGRESSION",
+    "test:smoke": "npx playwright test --grep @SMOKE"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Playwright test automation skeleton for the webmodule project.",
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.5.2",
+    "prettier": "^3.8.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "otplib": "^13.4.1"
+  }
+}
