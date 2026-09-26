@@ -1,5 +1,5 @@
 import { Tag } from "../constant/test-tags.constant";
-import { pageManagerFixture as test} from "../lib/fixtures/page-manager.fixture";
+import { pageManagerFixture as test } from "../lib/fixtures/page-manager.fixture";
 import { testConfig } from "../configs/config";
 import { InvalidUsers } from "../constant/invalid-users.constant";
 

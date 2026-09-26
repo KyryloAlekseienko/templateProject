@@ -6,22 +6,28 @@ on:
   pull_request:
     branches: [main, master]
   workflow_dispatch:
+    inputs:
+      env:
+        description: Environment
+        type: choice
+        options: [qa, dev, stage, prod]
+        default: qa
+      grep:
+        description: "Test filter, e.g. @SMOKE"
+        required: false
+
+# A new push to the same branch cancels the previous run
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    env:
-      ENV: prod
-      LOGIN: ${{ secrets.LOGIN }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-      FIRST_NAME: ${{ secrets.FIRST_NAME }}
-      LAST_NAME: ${{ secrets.LAST_NAME }}
-      ADMIN_LOGIN: ${{ secrets.ADMIN_LOGIN }}
-      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-      ADMIN_TOTP_SECRET: ${{ secrets.ADMIN_TOTP_SECRET }}
-
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -34,15 +40,91 @@ jobs:
 
       - run: npm run format:check
 
-      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
 
-      - run: npm run test
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
-      - uses: actions/upload-artifact@v4
-        if: always()
+    env:
+      ENV: ${{ inputs.env || 'qa' }}
+      GREP: ${{ inputs.grep }}
+      LOGIN: ${{ secrets.LOGIN }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      FIRST_NAME: ${{ secrets.FIRST_NAME }}
+      LAST_NAME: ${{ secrets.LAST_NAME }}
+      SECOND_LOGIN: ${{ secrets.SECOND_LOGIN }}
+      SECOND_PASSWORD: ${{ secrets.SECOND_PASSWORD }}
+      SECOND_FIRST_NAME: ${{ secrets.SECOND_FIRST_NAME }}
+      SECOND_LAST_NAME: ${{ secrets.SECOND_LAST_NAME }}
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          name: playwright-report
+          node-version: lts/*
+          cache: npm
+
+      - run: npm ci
+
+      - name: Get Playwright version
+        id: playwright
+        run: echo "version=$(npx playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - if: steps.browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - if: steps.browsers.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run tests
+        run: npx playwright test ${GREP:+--grep "$GREP"}
+
+      - name: Short report to job summary
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -f reports/summary.md ]; then
+            cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Short report was not generated" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload short report
+        id: summary-artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: summary-${{ env.ENV }}
+          path: |
+            reports/summary.html
+            reports/summary.md
+            reports/summary.json
+          retention-days: 30
+
+      - name: Upload detailed report
+        id: report-artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ env.ENV }}
           path: |
             playwright-report/
             test-results/
           retention-days: 14
+
+      - name: Slack report
+        if: ${{ !cancelled() && env.SLACK_BOT_TOKEN != '' && github.event_name != 'pull_request' }}
+        env:
+          SUMMARY_URL: ${{ steps.summary-artifact.outputs.artifact-url }}
+          REPORT_URL: ${{ steps.report-artifact.outputs.artifact-url }}
+        run: npm run report:slack

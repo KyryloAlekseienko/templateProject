@@ -1,4 +1,4 @@
-import { test as base } from "@playwright/test";
+import { BrowserContext, Page, test as base } from "@playwright/test";
 import { ZzDemoProductionsPage } from "../../page-objects/pages/zzdemo-productions.page";
 
 type Pages = {
@@ -11,11 +11,7 @@ type Helpers = {
   //TODO
 };
 
-type Visual = {
-  page: any;
-};
-
-export const pageManagerFixture = base.extend<Pages & Helpers & Visual>({
+export const pageManagerFixture = base.extend<Pages & Helpers>({
   // Page Objects
   zzDemoProductionsPage: async ({ page }, use) => {
     await use(new ZzDemoProductionsPage(page));
@@ -35,12 +31,16 @@ export const pageManagerFixture = base.extend<Pages & Helpers & Visual>({
     //   performance.now = () => 1000;
     // });
 
-    await page.route("**/analytics/**", (r) => r.abort());
-    await page.route("**/metrics/**", (r) => r.abort());
-    await page.route("**/ads/**", (r) => r.abort());
+    await blockNoise(page);
 
     await use(page);
   },
 });
+
+export async function blockNoise(target: Page | BrowserContext) {
+  await target.route("**/analytics/**", (r) => r.abort());
+  await target.route("**/metrics/**", (r) => r.abort());
+  await target.route("**/ads/**", (r) => r.abort());
+}
 
 export { expect } from "@playwright/test";

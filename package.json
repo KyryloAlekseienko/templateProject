@@ -8,7 +8,11 @@
     "test:regression": "npx playwright test --grep @REGRESSION",
     "test:smoke": "npx playwright test --grep @SMOKE",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "report": "npx playwright show-report",
+    "report:summary": "open reports/summary.html || xdg-open reports/summary.html",
+    "report:slack": "node scripts/slack-report.js"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +21,8 @@
   "devDependencies": {
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
-    "prettier": "^3.8.2"
+    "prettier": "^3.8.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "dotenv": "^17.3.1",

@@ -2,6 +2,7 @@ export class AppRoutes {
   static readonly productions = "/_ZZDemo/Productions";
   static readonly patronRegister = "/_ZZDemo/Patron/Register";
   static readonly checkout = "/_ZZDemo/Cart/Checkout";
+  static readonly login = "/_ZZDemo/Login/Login";
   static adminSettings(orgId: string, section: string): string {
     return `/${orgId}/Admin/Settings/${section}`;
   }

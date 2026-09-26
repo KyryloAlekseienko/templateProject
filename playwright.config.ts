@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { testConfig } from "./configs/config";
 
 export default defineConfig({
   testDir: "./tests",
@@ -24,14 +23,17 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
 
   reporter: [
-    ["list"],
+    // "github" turns failures into annotations on the PR diff
+    process.env.CI ? ["github"] : ["list"],
     ["html", { open: "never" }],
     ["json", { outputFile: "reports/test-results.json" }],
+    // Short report: reports/summary.{md,html,json}, see scripts/summary-report
+    ["./scripts/summary-report/reporter.js", { outputFolder: "reports", project: "webmodule" }],
   ],
 
   use: {
     actionTimeout: 10_000,
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
+    baseURL: testConfig.baseUrl,
     deviceScaleFactor: 1,
     headless: !!process.env.CI,
     navigationTimeout: 15_000,
