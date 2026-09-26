@@ -1,5 +1,5 @@
 import { expect, Page } from "@playwright/test";
-import { BasePage } from "./base.page";
+import { BasePage } from "../base/base.page";
 import { LoginComponent } from "../components/login.component";
 import { AppRoutes } from "../../constant/endpoints.constant";
 import { WelcomeComponent } from "../components/welcome.component";

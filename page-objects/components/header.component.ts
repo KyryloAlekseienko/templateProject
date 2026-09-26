@@ -1,4 +1,4 @@
-import { BaseComponent } from "./base.component";
+import { BaseComponent } from "../base/base.component";
 import { expect, Locator, Page } from "@playwright/test";
 
 export class HeaderComponent extends BaseComponent {

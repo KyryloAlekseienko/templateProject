@@ -1,5 +1,6 @@
 export interface EnvironmentConfig {
   baseUrl: string;
+  apiUrl: string;
 }
 
 export enum Environment {
@@ -13,32 +14,20 @@ export const environmentConfig: {
   [key in Environment | string]: EnvironmentConfig;
 } = {
   dev: {
-    baseUrl: "https://zz.patronbase.com",
+    baseUrl: "https://localhost:4200",
+    apiUrl: "https://localhost:44395",
   },
   qa: {
     baseUrl: "https://zz.patronbase.com",
+    apiUrl: "https://localhost:44395",
   },
   stage: {
     baseUrl: "",
+    apiUrl: "",
   },
   prod: {
-    baseUrl: "https://zz.patronbase.com",
+    baseUrl: "",
+    apiUrl: "",
   },
 };
 
-export const authConfig = {
-  credentials: {
-    login: process.env.LOGIN || "",
-    password: process.env.PASSWORD || "",
-    firstName: process.env.FIRST_NAME || "",
-    lastName: process.env.LAST_NAME || "",
-  },
-};
-
-export const adminAuthConfig = {
-  adminCredentials: {
-    username: process.env.ADMIN_LOGIN || "",
-    password: process.env.ADMIN_PASSWORD || "",
-    totpSecret: process.env.ADMIN_TOTP_SECRET || "",
-  },
-};

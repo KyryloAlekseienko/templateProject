@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { BaseComponent } from "./base.component";
+import { BaseComponent } from "../base/base.component";
 
 export class WelcomeComponent extends BaseComponent {
   private readonly welcomeMessage: Locator;

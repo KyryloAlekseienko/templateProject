@@ -103,7 +103,7 @@ they ever drift, not on macOS.
 
 ## Practices
 
-- Add scenarios through page objects and the shared `test` from `lib/core/base-test.ts`.
+- Add scenarios through page objects and the shared `test` from `lib/core/page-manager.fixture.ts`.
 - Keep secrets in `.env` or CI secrets, not in the repo.
 
 ---

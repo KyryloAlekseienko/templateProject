@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { BaseEntity } from "../base.entity";
+import { BaseEntity } from "./base.entity";
 import { testConfig } from "../../configs/config";
 
 export abstract class BasePage extends BaseEntity {
